@@ -19,4 +19,13 @@ def handleMissingValues(df,fill_missing_values_cols_options):
             df.drop(columns=[col], inplace = True)
         elif(method == "Drop Rows"):
             df.dropna(subset =[col], inplace = True)
+        elif(method == "Fill With Mean"):
+            df[col].fillna(df[col].mean(), inplace = True)
+        elif (method == 'Fill With Median'):
+            df[col].fillna(df[col].median(), inplace = True)
+        elif (method == 'Fill With Mode'):
+            df[col].fillna(df[col].mode()[0], inplace = True) 
     return df
+
+def getNumberOfDuplicateRows(df):
+    return df.duplicated().sum()
