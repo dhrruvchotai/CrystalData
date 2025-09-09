@@ -3,7 +3,7 @@ import streamlit as st
 import chardet
 import pandas as pd
 from cleaning.utils import preprocessGetMissingValTableOrMsg,preprocessGetFirstNRowsOfDataAndMsg,preprocessGetDuplicateRowsCountMessageIfAny
-from cleaning.preprocess import getMissingValuesContainingColsWithCountOrMsg,handleMissingValues
+from cleaning.preprocess import getMissingValuesContainingColsWithCountOrMsg,handleMissingValues, removeDuplicateRows
 st.title("DataSet Cleaning - CRYSTAL DATA")
 
 uploaded_file = st.file_uploader("**Upload a CSV file**", type=["csv"])
@@ -46,6 +46,11 @@ if uploaded_file:
 
     if(st.button("Get Count Of Duplicate Rows")):
         preprocessGetDuplicateRowsCountMessageIfAny(df)
+
+    if(st.button('Remove Duplicate Rows')):
+        removeDuplicateRows(df=df)
+        preprocessGetDuplicateRowsCountMessageIfAny(df)
+        
 
 
 

@@ -29,3 +29,6 @@ def handleMissingValues(df,fill_missing_values_cols_options):
 
 def getNumberOfDuplicateRows(df):
     return df.duplicated().sum()
+
+def removeDuplicateRows(df):
+    df.drop_duplicates(inplace=True)
