@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
+from sklearn.preprocessing import StandardScaler,MinMaxScaler,RobustScaler
 
 #GET MISSING VALUE COLUMN NAMES DF
 def getMissingValuesContainingColsWithCountOrMsg(df):
@@ -87,3 +88,23 @@ def getTableOfNumericalAndCategoricalColumnsInDataOrMsg(df, min_unique_values_th
         'Categorical Column Names' : categorical_cols
         }
     )
+
+def applyScalingOnNumericalColumns(df, numerical_cols, selected_scaling_method_for_each_column):
+    df_scaled = df.copy()
+
+    for col,method in selected_scaling_method_for_each_column.items():
+        if method == "None":
+            continue
+        elif method =="StandardScaler (Z-score)":
+            scaler = StandardScaler()
+        elif method == "MinMaxScaler (0-1)":
+            scaler = MinMaxScaler()
+        elif method == "RobustScaler (less affected by outliers)":
+            scaler = RobustScaler()
+        else:
+            continue
+        
+        scaled_data = scaler.fit_transform(df[[col]])
+        df_scaled[col] = scaled_data
+    return df_scaled
+

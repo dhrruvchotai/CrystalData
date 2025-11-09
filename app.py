@@ -25,6 +25,7 @@ from cleaning.utils import preprocessGetBarChartPlottingSectionForUnivariateCate
 from cleaning.utils import preprocessGetScatterPlotPlottingSectionForBivariateAndMultivariateNumericalVsNumerical
 from cleaning.utils import preprocessGetHeatmapPlottingSectionForBivariateAndMultivariateCategoricalVsCategorical
 from cleaning.utils import preprocessGetBoxplotPlottingSectionForOutlierDetection
+from cleaning.preprocess import applyScalingOnNumericalColumns
 
 st.title("DataSet Cleaning - CRYSTAL Data")
 
@@ -221,6 +222,26 @@ if uploaded_file:
     with col2:
         st.subheader("Feature Scaling (Standardization / Normalization)")
     st.markdown("---")
+
+    selected_scaling_method_for_each_column = {}
+    for col in numerical_cols:
+        selected_scaling_method_for_each_column[col] = st.selectbox(
+            f"Select Scaling method for {col} Column : ", 
+            options=["None", "StandardScaler (Z-score)", "MinMaxScaler (0-1)", "RobustScaler (less affected by outliers)"]
+        )
+
+    is_perform_scaling_button_pressed = False
+    col1,col2,col3 = st.columns([2,3,1])
+    with col2:
+        if st.button("Perform Scaling on the Data"):
+            is_perform_scaling_button_pressed = True
+            df = applyScalingOnNumericalColumns(df=df,numerical_cols=numerical_cols,selected_scaling_method_for_each_column=selected_scaling_method_for_each_column)
+    if is_perform_scaling_button_pressed:
+        st.success("Data successfully Scaled using selected Scaling methods for each Column.")
+        preprocessGetFirstNRowsOfDataAndMsg(df=df,numberOfRowsToShow=5,msgToShow="First 5 rows of Data after Scaling : ")
+
+
+
 
 
 
