@@ -80,6 +80,8 @@ def preprocessGetHistogramPlottingSectionForUnivariateNumericalCols(df, numerica
 def preprocessGetBarChartPlottingSectionForUnivariateCategoricalCols(df, categorical_cols):
     if not categorical_cols:
         st.error("No Categorical columns found to plot!")
+    if len(categorical_cols) == 0:
+        st.error("No Categorical columns found to plot!")
     else:
         st.info("To keep the Bar Chart easy to read, we've included only columns with up to 5 unique categories.")
         categorical_cols_filtered = [col for col in categorical_cols if df[col].nunique() <= 5]
@@ -190,6 +192,7 @@ def preprocessGetScatterPlotPlottingSectionForBivariateAndMultivariateNumericalV
             st.plotly_chart(fig, use_container_width=True)
 
 def preprocessGetHeatmapPlottingSectionForBivariateAndMultivariateCategoricalVsCategorical(df, categorical_cols):
+    
     if not categorical_cols:
         st.error("No Categorical columns found to plot!")
     elif len(categorical_cols) <= 1:
@@ -228,8 +231,13 @@ def preprocessGetHeatmapPlottingSectionForBivariateAndMultivariateCategoricalVsC
                 )
                 st.plotly_chart(fig, use_container_width=True)
 
-#Outlier Detection & Removal
 
+#Check Normal Distribution
+def preprocessGetKdePlotForCheckingNormalDistribution(df,numerical_cols):
+    pass
+
+
+#Outlier Detection & Removal
 def preprocessGetBoxplotPlottingSectionForOutlierDetection(df, numerical_cols):
 
     if len(numerical_cols) < 1:

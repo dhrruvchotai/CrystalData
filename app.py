@@ -26,6 +26,7 @@ from cleaning.utils import preprocessGetScatterPlotPlottingSectionForBivariateAn
 from cleaning.utils import preprocessGetHeatmapPlottingSectionForBivariateAndMultivariateCategoricalVsCategorical
 from cleaning.utils import preprocessGetBoxplotPlottingSectionForOutlierDetection
 from cleaning.preprocess import applyScalingOnNumericalColumns
+import plotly.figure_factory as ff
 
 st.title("DataSet Cleaning - CRYSTAL Data")
 
@@ -213,6 +214,16 @@ if uploaded_file:
     st.subheader("Outlier Detection & Removal : Boxplot")
     df = preprocessGetBoxplotPlottingSectionForOutlierDetection(df=df,numerical_cols=numerical_cols)
     
+    #CHECK NORMAL DISTRIBUTION
+    st.markdown("---")
+    col1,col2,col3 = st.columns([1.8,3,1])
+    with col2:
+        st.subheader("Normal Distribution")
+    col1,col2,col3 = st.columns([1,3,1])
+    with col2:
+        y_col = st.selectbox("Select Column to plot kde Plot:",options=numerical_cols)
+    fig = ff.create_distplot([df[y_col].fillna(df[y_col].median())],group_labels=[y_col],curve_type='kde',show_hist=False)
+    st.plotly_chart(fig,use_container_width=True)
 
 
     #STANDARDIZATION AND NORMALIZATION
