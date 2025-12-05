@@ -404,6 +404,7 @@ if uploaded_file:
                 st.error(f"Error splitting data: {e}")
 
     # PIPELINE GENERATION
+    is_generate_pipeline_code_btn_pressed = False
     st.markdown("---")
     col1,col2,col3 = st.columns([3.68,3,1.8])
     with col2:
@@ -411,9 +412,13 @@ if uploaded_file:
     col1,col2,col3 = st.columns([3.9,3,1.8])
     with col2:
         if st.button("Generate Sklearn Pipeline Code"):
+            is_generate_pipeline_code_btn_pressed = True
             pipeline_code = generate_pipeline_code(st.session_state['pipeline_steps'])
-            st.code(pipeline_code, language='python')
-            st.download_button("Download Pipeline Code", pipeline_code, "pipeline.py", "text/plain")
+            col1,col2 = st.columns([0.1,3])
+            with col2:
+                st.download_button("Download Pipeline Code", pipeline_code, "pipeline.py", "text/plain")
+    if is_generate_pipeline_code_btn_pressed:
+        st.code(pipeline_code, language='python')
     
     # Final Download
     st.markdown("---")
